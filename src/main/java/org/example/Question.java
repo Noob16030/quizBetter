@@ -8,20 +8,28 @@ public class Question {
     private String description;
     private String question;
     private List<Answer> answers;
-    private boolean Typo;
+    private QuestionType questionType;
+    private int pointsForQuestion;
 
-    public boolean isTypo() {
-        return Typo;
+    public int getPointsForQuestion() {
+        return pointsForQuestion;
     }
 
-    public Question(String description, String question, boolean Typo) {
+    public Question(String description, String question, QuestionType questionType) {
         this.description = description;
         this.question = question;
-        this.Typo = Typo;
+        this.questionType = questionType;
         this.answers = new ArrayList<>();
     }
     public void addAnswers(Answer answer){
         this.answers.add(answer);
+        if (answer.isCorrect()){
+            if (this.questionType == QuestionType.TYPED_ANSWER){
+                this.pointsForQuestion = 5;
+            } else {
+                this.pointsForQuestion++;
+            }
+        }
     }
 
     public void printDescription(){
@@ -38,23 +46,21 @@ public class Question {
         int points = 0;
         Scanner scanner = new Scanner(System.in);
         input = scanner.nextLine().toLowerCase();
-        for(Answer answer: answers){
-            if (input.contains(answer.getInput()) && answer.isCorrect()){
-                points++;
-            }
-        }
-        return points;
-    }
-
-    public int checkTypoAnswer(){
-        String input;
-        int points = 0;
-        Scanner scanner = new Scanner(System.in);
-        input = scanner.nextLine().toLowerCase();
-        for(Answer answer: answers){
-            if (input.equals(answer.getInput()) && answer.isCorrect()){
-                points += 5;
-            }
+        switch (questionType) {
+            case SINGLE_ANSWER, MULTIPLE_ANSWERS:
+                for (Answer answer : answers) {
+                    if (input.contains(answer.getOption()) && answer.isCorrect()) {
+                        points++;
+                    }
+                }
+                break;
+            case TYPED_ANSWER:
+                for(Answer answer: answers){
+                    if (input.equals(answer.getOption()) && answer.isCorrect()){
+                        points += 5;
+                    }
+                }
+                break;
         }
         return points;
     }

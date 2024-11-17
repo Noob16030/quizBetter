@@ -12,18 +12,14 @@ public class Quiz {
         return points;
     }
 
-    public void setPoints(int points) {
-        this.points = points;
-    }
-
-    public Quiz(String name, int maxPoints) {
+    public Quiz(String name) {
         this.name = name;
-        this.maxPoints = maxPoints;
         this.listOfQuestions = new ArrayList<>();
     }
 
     public void addQuestion(Question question){
         this.listOfQuestions.add(question);
+        this.maxPoints += question.getPointsForQuestion();
     }
 
     public void runQuiz(){
@@ -33,13 +29,9 @@ public class Quiz {
             System.out.println("=========================");
             for (int i = 0; i < listOfQuestions.size(); i++){
                 listOfQuestions.get(i).printDescription();
-                if (listOfQuestions.get(i).isTypo()){
-                    points += listOfQuestions.get(i).checkTypoAnswer();
-                } else {
-                    points += listOfQuestions.get(i).checkAnswer();
-                }
+                this.points += listOfQuestions.get(i).checkAnswer();
             }
-            System.out.println("You got " + getPoints() +" from " + maxPoints + " points.");
+            System.out.println("You got " + getPoints() +" from " + this.maxPoints + " points.");
         } else {
             System.out.println("I do not have any questions.");
         }

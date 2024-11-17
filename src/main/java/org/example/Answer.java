@@ -1,7 +1,7 @@
 package org.example;
 
 public class Answer {
-    private String input;
+    private String option;
     private String description;
     private boolean correct;
     private boolean hideText;
@@ -10,8 +10,8 @@ public class Answer {
         return correct;
     }
 
-    public Answer(String input, String description, boolean correct, boolean hideText) {
-        this.input = input;
+    public Answer(String option, String description, boolean correct, boolean hideText) {
+        this.option = option;
         this.description = description;
         this.correct = correct;
         this.hideText = hideText;
@@ -19,13 +19,13 @@ public class Answer {
 
     public void printAnswer(){
         if (!hideText) {
-            System.out.println(input + ". " + description);
+            System.out.println(option + ". " + description);
         } else {
             System.out.println("Type your answer: ");
         }
     }
 
-    public String getInput() {
-        return input;
+    public String getOption() {
+        return option;
     }
 }
